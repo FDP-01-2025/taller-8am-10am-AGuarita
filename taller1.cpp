@@ -1,14 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/kuYFMccO)
-# parte1
-✏️ Parte I – Completar una función del CRUD
-📝 Instrucciones:
-A continuación te damos un programa incompleto que implementa parte del CRUD de estudiantes usando estructuras (struct), funciones y manejo de archivos. Tu tarea es completar la función faltante correspondiente a una operación del CRUD , siguiendo las indicaciones.
-
-Puedes usar o no el manejo de archivos según lo desees, pero si lo implementas correctamente obtendrás **2 puntos extra**.
-🔧 Código proporcionado (incompleto):
-
-
-```cpp
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -18,6 +7,8 @@ struct Estudiante {
     string carnet;
     int edad;
 };
+Estudiante estudiantes[10];
+int total=0;
 
 // Función para agregar estudiante (CREATE)
 void agregarEstudiante() {
@@ -28,6 +19,7 @@ void agregarEstudiante() {
     cin >> e.carnet;
     cout << "Edad: ";
     cin >> e.edad;
+    total++;
 
     ofstream archivo("estudiantes.txt", ios::app);
     if (archivo.is_open()) {
@@ -101,13 +93,30 @@ void modificarEstudiante() {
 
 
 // 👇 TU TAREA: Completa esta función (DELETE)
-    // Escribe aquí la función que elimine un estudiante por su carnet.
-    // Puedes usar o no el manejo de archivos.
-    // Si lo haces con archivos, ganarás **2 puntos extra**.
-void eliminarEstudiante() {
+void eliminarEstudiante(){
+    string eliminar;
+    Estudiante e;
+    ifstream archivo("estudiantes.txt");
+    ofstream temp("temp.txt");
+    cout << "Escriba el carnet del estudiante a remover"<< endl;
+    cin >> eliminar;
+    if (archivo.is_open() && temp.is_open()) {
+        while (archivo >> e.nombre >> e.carnet >> e.edad) {
+            if (e.carnet == eliminar){
+             cout <<"Estudiante eliminado"<< endl;   
+            }
+            else {
+                temp << e.nombre << " " << e.carnet << " " << e.edad << endl;
+            }
+        }
+        archivo.close();
+        temp.close();
+        remove("estudiantes.txt");
+        rename("temp.txt", "estudiantes.txt");
+        }
+    }
 
-}
-
+    
 
 // Menú principal
 int main() {
@@ -134,12 +143,4 @@ int main() {
     } while (opcion != 5);
 
     return 0;
-}
-```
-📌 Tu tarea:
-Completa la función eliminarEstudiante() para que:
-
-Lea el carnet del estudiante a eliminar.
-Elimine ese registro del archivo o de la lista en memoria.
-Muestre un mensaje de confirmación o error.
 }
